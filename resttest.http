@@ -1,0 +1,38 @@
+### Получить список всех задач
+GET http://194.58.126.236:8000/api/tasks/
+Accept: application/json
+
+###
+
+### Создать новую задачу
+POST http://194.58.126.236:8000/api/tasks/
+Content-Type: application/json
+
+{
+    "title": "Изучить Docker",
+    "description": "Прочитать документацию и попробовать примеры",
+    "completed": false
+}
+
+###
+
+### Получить детальную информацию о задаче
+GET http://194.58.126.236:8000/api/tasks/1/
+Accept: application/json
+
+###
+
+### Обновить задачу
+PUT http://194.58.126.236:8000/api/tasks/1/
+Content-Type: application/json
+
+{
+    "title": "Изучить Docker и Kubernetes",
+    "description": "Прочитать документацию и попробовать примеры",
+    "completed": false
+}
+
+###
+
+### Удалить задачу
+DELETE http://194.58.126.236:8000/api/tasks/1/
