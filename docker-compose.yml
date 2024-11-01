@@ -6,11 +6,27 @@ services:
     container_name: todo-web
     command: gunicorn --bind 0.0.0.0:8000 todo_project.wsgi:application
     volumes:
-      - .:/app
+      - static_volume:/app/static
     expose:
       - "8000"
     env_file:
       - .env
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: postgres:13
+    container_name: todo-db
+    environment:
+      POSTGRES_DB: vkinder
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 619620qazwsx
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - app-network
 
   nginx:
     image: nginx:latest
@@ -22,5 +38,12 @@ services:
       - static_volume:/app/static
     depends_on:
       - web
+    networks:
+      - app-network
+
 volumes:
+  postgres_data:
   static_volume:
+
+networks:
+  app-network:

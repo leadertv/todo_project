@@ -5,36 +5,34 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Устанавливаем переменные окружения для Python
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-# Устанавливаем зависимости системы
+# Устанавливаем системные зависимости
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
     gettext \
     && rm -rf /var/lib/apt/lists/*
 
-# Копируем файлы зависимостей
+# Копируем файл зависимостей
 COPY requirements.txt /app/
 
-# Устанавливаем зависимости
+# Устанавливаем зависимости Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Копируем остальные файлы проекта
+# Копируем проект
 COPY . /app/
 
-# Собираем статические файлы
-RUN python manage.py collectstatic --noinput
+# Копируем скрипт entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-# Применяем миграции
-RUN python manage.py migrate
+# Устанавливаем точку входа
+ENTRYPOINT ["/entrypoint.sh"]
 
 # Открываем порт 8000
 EXPOSE 8000
 
-# Применяем миграции и создаем суперпользователя (опционально)
-RUN python manage.py migrate
-
-# Запускаем сервер с использованием Gunicorn
+# Команда для запуска приложения
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "todo_project.wsgi:application"]
