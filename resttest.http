@@ -1,11 +1,11 @@
 ### Получить список всех задач
-GET http://194.58.126.236:80/api/tasks/
+GET http://194.58.126.236/api/tasks/
 Accept: application/json
 
 ###
 
 ### Создать новую задачу
-POST http://194.58.126.236:80/api/tasks/
+POST http://194.58.126.236/api/tasks/
 Content-Type: application/json
 
 {
@@ -17,13 +17,13 @@ Content-Type: application/json
 ###
 
 ### Получить детальную информацию о задаче
-GET http://194.58.126.236:80/api/tasks/1/
+GET http://194.58.126.236/api/tasks/1/
 Accept: application/json
 
 ###
 
 ### Обновить задачу
-PUT http://194.58.126.236:80/api/tasks/1/
+PUT http://194.58.126.236/api/tasks/1/
 Content-Type: application/json
 
 {
@@ -35,4 +35,4 @@ Content-Type: application/json
 ###
 
 ### Удалить задачу
-DELETE http://194.58.126.236:80/api/tasks/1/
+DELETE http://194.58.126.236/api/tasks/1/

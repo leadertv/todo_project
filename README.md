@@ -39,6 +39,7 @@
 - Django REST Framework
 - Docker
 - Docker Compose
+- PostgreSQL
 
 ---
 
@@ -62,36 +63,20 @@ cd todo_project
 Соберите Docker-образ:
 
 ```bash
-docker build --network=host -t todo-app .
+docker compose up --build
 ```
-
-### Запуск контейнера
-
-Запустите контейнер с необходимыми переменными окружения:
-
-```bash
-docker run -d -p 8000:8000 \
-    --env SECRET_KEY=your_secret_key_here \
-    --env DEBUG=True \
-    --env ALLOWED_HOSTS=localhost,127.0.0.1 \
-    --name todo-container \
-    todo-app
-```
-
-- Замените `your_secret_key_here` на ваш секретный ключ Django.
-- Убедитесь, что `ALLOWED_HOSTS` содержит необходимые хосты.
 
 ### Запуск контейнера через Docker Compose
 
 - Заходим в папку /todo-tasks/
 - Отредактируйте файл .env
-- Билдим образ `docker compose build`
-- Запускаем: `docker compose up -d`
-- Подтянется NGINX и Само приложение.
+- Билдим образ `docker compose up --build` если до этого не делали
+- Запускаем: `docker compose up -d` если не запущен
+- Подтянется NGINX, PostgreSQL  и Само приложение.
 
 
 ### Применение миграций
-
+Миграции делаются автоматически через entrypoint.sh скрипт
 Если миграции не были применены автоматически, выполните команду:
 
 ```bash
@@ -105,12 +90,13 @@ docker exec -it todo-container python3 manage.py migrate
 ### Базовый URL
 
 ```
-http://localhost:80/api/tasks/
+http://localhost/api/tasks/
 ```
 Из вне
 ```
-http://IP:80/api/tasks/
+http://IP/api/tasks/
 ```
+Порт указывать не обязательно.
 
 ### Эндпоинты
 
@@ -238,7 +224,7 @@ DELETE /api/tasks/1/
 
 ### Использование Postman
 
-Порт 8000 если используете Dockerfile или 80 если запустили через Docker Compose
+Порт указывать не нужно или не обязательно
 
 1. **Получить список задач**
 
@@ -323,26 +309,13 @@ DELETE http://localhost:80/api/tasks/1/
 
 ---
 
-## Переменные окружения
+## Переменные окружения .env
 
 Приложение использует переменные окружения для конфигурации:
 
 - `SECRET_KEY` — секретный ключ Django (обязателен).
 - `DEBUG` — режим отладки (`True` или `False`).
 - `ALLOWED_HOSTS` — список разрешенных хостов, разделенных запятыми (например, `localhost,127.0.0.1`).
-
-**Пример запуска контейнера с переменными окружения:**
-
-```bash
-docker run -d -p 8000:8000 \
-    --env SECRET_KEY=mysecretkey \
-    --env DEBUG=True \
-    --env ALLOWED_HOSTS=localhost,127.0.0.1 \
-    --name todo-container \
-    todo-app
-```
-
----
 
 ## Структура проекта
 
